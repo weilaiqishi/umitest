@@ -1,11 +1,13 @@
 import { Effect, ImmerReducer, Reducer, Subscription } from 'umi'
-import { getRemoteList } from './service'
+import { getRemoteList, editRecord, deleteRecord } from './service'
 
 interface UserModel {
     namespace: 'users',
     state: {},
     effects: {
-        getRemote: Effect
+        getRemote: Effect,
+        edit: Effect,
+        delete: Effect,
     },
     reducers: {
         getList: Reducer
@@ -29,6 +31,12 @@ const UserModel: UserModel = {
                 type: 'getList',
                 payload: data
             })
+        },
+        *edit({ payload }, { put, call }) {
+            const data = yield call(editRecord, payload)
+        },
+        *delete({ payload }, { put, call }) {
+            const data = yield call(deleteRecord, payload)
         }
     },
     reducers: {
